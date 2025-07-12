@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - YOUR_PROJECT_NAME</title>
+
+  <!-- Local CSS -->
+  <link rel="stylesheet" href="../public/css/sb-admin-2.min.css">
+  <link rel="stylesheet" href="../public/vendor/fontawesome-free/css/all.min.css">
+
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
+  <!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+
+  
+    
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">PROJECT WEB TECH</a>
+    <div>
+      <a class="btn btn-outline-light" href="#">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <h2>Welcome, User!</h2>
+  
+  <div class="row mt-4">
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Graphs</h5>
+          <canvas id="myChart" width="400" height="200"></canvas>
+          <a href="#" class="btn btn-primary mt-3">View</a>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Calendar</h5>
+          <ul id="eventList" class="list-group"></ul>
+
+          <a href="#" class="btn btn-primary mt-3">View</a>
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-md-4">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5 class="card-title">Map</h5>
+          <div id="map" style="height: 200px; width: 100%;"></div>
+
+          <a href="#" class="btn btn-primary mt-3">View</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="foter" style="background-color: grey; margin-top:150px ; padding: 40px; color: white; text-align: center;">
+  <small>&copy; PROJECT WEB TECH. All rights reserved.</small>
+</footer>
+
+<!-- Local JS -->
+<script src="../public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+
+<!-- Init Chart -->
+<script>
+fetch('/api/chart-data')
+  .then(res => res.json())
+  .then(data => {
+    new Chart(document.getElementById('myChart'), {
+      type: 'bar',
+      data: {
+        labels: data.labels,
+        datasets: [{
+          label: '# of Votes',
+          data: data.values,
+          backgroundColor: 'rgba(54, 162, 235, 0.5)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+  });
+</script>
+
+<!-- Init FullCalendar -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  fetch('/api/calendar-events')
+    .then(res => res.json())
+    .then(events => {
+      var list = document.getElementById('eventList');
+      events.forEach(event => {
+        var item = document.createElement('li');
+        item.className = 'list-group-item';
+        item.textContent = event.start + ' - ' + event.title;
+        list.appendChild(item);
+      });
+    })
+    .catch(err => console.error('Calendar fetch error:', err));
+});
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  fetch('/api/map-data')
+    .then(res => res.json())
+    .then(data => {
+      var map = L.map('map').setView([data.lat, data.lng], data.zoom);
+
+      // Add OpenStreetMap tiles
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      // Add a marker (optional)
+      L.marker([data.lat, data.lng]).addTo(map)
+        .bindPopup('Your Location')
+        .openPopup();
+    })
+    .catch(err => console.error('Map fetch error:', err));
+});
+</script>
+
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+</body>
+</html>
