@@ -10,37 +10,76 @@
   <link rel="stylesheet" href="../public/vendor/fontawesome-free/css/all.min.css">
   <!-- Your main CSS (if you have) -->
   <link rel="stylesheet" href="../public/css/style.css">
+  <style>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #f8fafc;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 100px auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.2em;
+  color: #0d6efd; /* Bootstrap primary color */
+  margin-bottom: 20px;
+}
+
+h1 strong {
+  color: #0d6efd;
+}
+
+.lead {
+  font-size: 1.2em;
+  line-height: 1.6;
+  color: #555;
+}
+</style>
+
+  </style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container">
-    <a class="navbar-brand" href="#">WEB TECH PROJECT</a>
+    <a class="navbar-brand" href="#">HOSTEL MANAGEMENT</a>
     <div>
-      <a class="btn btn-light me-2" href="#">Login</a>
-      <a class="btn btn-success" href="#">Register</a>
+      <a class="btn btn-light me-2" href="/login">Login</a>
+      <a class="btn btn-success" href="/register">Register</a>
     </div>
   </div>
-</nav>
+</nav> -->
 
 <header class="py-5 bg-light text-center">
-  <div class="container">
-    <h1>Welcome to <strong>MY WEB TECH PROJECT</strong></h1>
-<p class="lead">
-  This web application is a modern multi-user dashboard platform designed to manage users, roles, and permissions.
-  It features dynamic graphs, an interactive calendar, real-time map integration, and a secure login system for admins and users.
-  Built with Node.js, Express, and Bootstrap, it combines clean design with practical functionality — making it an ideal project for learning full‑stack web development.
-</p>
+ <div class="container">
+  <h1>Welcome to <strong>OUR HOSTEL MANAGEMENT PAGE</strong></h1>
+  <p class="lead">
+    This web application allows students to securely log in and view their personal details, room information, and notices.
+    Built with Node.js, Express, and MongoDB, it provides an easy‑to‑use dashboard where students can see their data, upcoming events, and important updates from hostel administration.
+  </p>
+</div>
 
-  </div>
 </header>
 
 <section class="py-5 text-center">
-  <a href="#" class="btn btn-primary btn-lg me-3">Login</a>
-  <a href="#" class="btn btn-success btn-lg">Register</a>
+  <a href="/login" class="btn btn-primary btn-lg me-3">Login</a>
+  <a href="/register" class="btn btn-success btn-lg">Register</a>
 </section>
 
-<footer class="foter" style="background-color: rgb(96, 37, 233); margin-top:170px ; padding: 20px; color: white; text-align: center;">
+<footer class="foter" style="background-color: rgb(96, 37, 233);   color: white; text-align: center;">
   <small>&copy; PROJECT WEB TECH. All rights reserved.</small>
 </footer>
 

@@ -14,7 +14,32 @@
   <!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
+<style>
+  #user-info {
+  margin: 50px auto;                  /* center horizontally + top margin */
+  padding: 20px 40px; 
+  padding-right:100px ;
+                  /* space inside the box */
+  max-width: 300px;                   /* keep it from getting too wide */
+  
+  text-align: center;                 /* center text */
+  font-size: 1.5rem;                  /* larger text */
+  font-weight: 600;                   /* semi-bold */
+  color: #1d1d1e;                        /* dark gray text for readability */
 
+  background: linear-gradient(135deg, #89f7fe, #66a6ff); /* gradient background */
+  border-radius: 12px;                /* rounded corners */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* subtle shadow */
+  
+  transition: transform 0.2s ease;    /* smooth hover effect */
+}
+
+/* optional: hover effect */
+#user-info:hover {
+  transform: translateY(-3px);        /* move up slightly on hover */
+}
+
+</style>
   
     
 </head>
@@ -22,15 +47,15 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand" href="#">PROJECT WEB TECH</a>
+    <a class="navbar-brand" href="#">HOSTEL MANAGEMENT</a>
     <div>
-      <a class="btn btn-outline-light" href="#">Logout</a>
+      <a class="btn btn-outline-light" href="/login">Logout</a>
     </div>
   </div>
 </nav>
 
 <div class="container mt-4">
-  <h2>Welcome, User!</h2>
+  <h2 style="text-align: center;">Welcome, Student</h2>
   
   <div class="row mt-4">
     <div class="col-md-4">
@@ -66,8 +91,10 @@
     </div>
   </div>
 </div>
+<div id="user-info">User Info</div>
 
-<footer class="foter" style="background-color: grey; margin-top:150px ; padding: 40px; color: white; text-align: center;">
+
+<footer class="foter" style="background-color: rgb(157, 149, 236); margin-top:170px ; padding: 20px; color: white; text-align: center;">
   <small>&copy; PROJECT WEB TECH. All rights reserved.</small>
 </footer>
 
@@ -141,6 +168,30 @@ document.addEventListener('DOMContentLoaded', function() {
     .catch(err => console.error('Map fetch error:', err));
 });
 </script>
+
+
+<!-- //for apiuser -->
+
+<script>
+  fetch('/api/user')
+    .then(res => res.json())
+    .then(data => {
+      if (data.username) {
+        document.getElementById('user-info').innerHTML = `
+          <h3>Welcome </h3><br>
+          <h5>Name :  ${data.username}</h5>
+          <p>Email : ${data.email}</p>
+          <p>Contact No : ${data.contact}</p>
+          <p>Fee status: ${data.fee}</p>
+          <p>Role: ${data.role}</p>
+          
+        `;
+      }
+    })
+    .catch(err => console.error(err));
+</script>
+
+
 
 
 <!-- Leaflet JS -->

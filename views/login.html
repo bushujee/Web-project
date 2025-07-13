@@ -5,16 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../public/css/sb-admin-2.min.css">
+    <style>
+      .container {
+  display: flex;
+  justify-content: center; /* center horizontally */
+  align-items: center;     /* center vertically */
+  height: 100vh;           /* make container full height of viewport (optional) */
+}
+form {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+    </style>
 
 </head>
 <body>
-    <h1>Login</h1>
+  <div class="container">
+ 
 <form method="POST" action="/login">
+  <h1 >Login</h1><br>
   <input type="text" name="username" placeholder="Username" required><br><br>
   <input type="password" name="password" placeholder="Password" required><br><br>
-  <button type="submit">Login</button>
+  <button type="submit">Login</button><br><br>
+  <p>Don't have an account? <a href="/register">Register here</a></p>
 </form>
-<p>Don't have an account? <a href="/register">Register here</a></p>
+
+</div>
+   
 
 </body>
 </html>
