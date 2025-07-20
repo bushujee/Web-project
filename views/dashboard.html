@@ -38,7 +38,46 @@
 #user-info:hover {
   transform: translateY(-3px);        /* move up slightly on hover */
 }
+  /*  */
 
+  
+  .table-heading {
+    text-align: center;
+    font-size: 2em;
+    margin: 20px 0;
+    color: #2c3e50;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  #recordsTable {
+    width: 90%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  #recordsTable th, #recordsTable td {
+    padding: 12px 15px;
+    text-align: left;
+  }
+
+  #recordsTable thead {
+    background-color: #3498db;
+    color: #fff;
+  }
+
+  #recordsTable tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  #recordsTable tbody tr:hover {
+    background-color: #e0f7fa;
+  }
+
+  #recordsTable td {
+    border-bottom: 1px solid #ddd;
+  }
 </style>
   
     
@@ -91,7 +130,24 @@
     </div>
   </div>
 </div>
-<div id="user-info">User Info</div>
+<h1 class="table-heading">Student Record</h1>
+ <table border="1" id="recordsTable">
+    
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Contact No</th>
+        <th>Fee stats</th>
+        <th>Role</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- New rows will be added here -->
+    </tbody>
+  </table>
 
 
 <footer class="foter" style="background-color: rgb(157, 149, 236); margin-top:170px ; padding: 20px; color: white; text-align: center;">
@@ -173,23 +229,76 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- //for apiuser -->
 
 <script>
-  fetch('/api/user')
-    .then(res => res.json())
-    .then(data => {
-      if (data.username) {
-        document.getElementById('user-info').innerHTML = `
-          <h3>Welcome </h3><br>
-          <h5>Name :  ${data.username}</h5>
-          <p>Email : ${data.email}</p>
-          <p>Contact No : ${data.contact}</p>
-          <p>Fee status: ${data.fee}</p>
-          <p>Role: ${data.role}</p>
-          
+     fetch('/api/user')
+  .then(res => res.json())
+  .then(data => {
+    if (data && data._id) {
+
+
+        const tableBody = document.querySelector('#recordsTable tbody');
+        const newRow = document.createElement('tr');
+
+        newRow.innerHTML = `
+           <td>${data._id}</td>
+           <td>${data.username}</td>
+          <td>${data.email}</td>
+          <td>${data.contact}</td>
+          <td>${data.fee}</td>
+          <td>${data.role}</td>
+          <td>
+            <button class="edit-btn" data-id="${data._id}">Edit</button>
+            <br><br>
+            <button class="delete-btn" data-id="${data._id}">Delete</button>
+          </td>
         `;
+
+        tableBody.appendChild(newRow);
+
+        // DELETE FUNCTION
+        newRow.querySelector('.delete-btn').addEventListener('click', () => {
+          const id = data._id;
+          fetch(`/delete/${id}`, {
+            method: 'DELETE'
+          })
+          .then(res => res.json())
+          .then(result => {
+            alert("Deleted!");
+            location.reload(); // Refresh table
+          })
+          .catch(err => console.error(err));
+        });
+
+        // EDIT FUNCTION
+        newRow.querySelector('.edit-btn').addEventListener('click', () => {
+          const id = data._id;
+          const updatedName = prompt("Edit your name:");
+          const updatedemail = prompt("Edit email");
+          const updatedFee = prompt("Enter new fee status:");
+          const updatedContact=prompt("Edit your contact info");
+
+          fetch(`/edit/${id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              username: updatedName,
+              email: updatedemail,
+              contact: updatedContact,
+              fee: updatedFee
+            })
+          })
+          .then(res => res.json())
+          .then(result => {
+            alert("Updated!");
+            location.reload();
+          })
+          .catch(err => console.error(err));
+        });
       }
-    })
-    .catch(err => console.error(err));
+    });
 </script>
+
 
 
 

@@ -43,6 +43,7 @@ app.get('/dashboard', (req, res) => {
 app.get('/api/user', (req, res) => {
   if (req.session.user) {
     res.json({
+      _id: req.session.user._id,
       username: req.session.user.username,
       email:req.session.user.email,
       contact:req.session.user.contact,
@@ -96,7 +97,7 @@ app.post('/register', async (req, res) => {
     // Check if user already exists
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.send('Username already exists. <a href="/register">Try again</a>');
+      return res.send('Username already exists. <a href="/login">Login here</a>');
     }
 
     // Create and save new user
@@ -131,6 +132,48 @@ app.post('/login', async (req, res) => {
   }
 });
 
+
+//edit button
+app.put("/edit/:id", async(req, res)=>{
+  try {
+    const id = req.params.id;
+
+    if (!id) {
+      return res.status(400).json({ error: "No ID provided" });
+    }
+
+    const updates = req.body;
+    const updateuser = await User.findByIdAndUpdate(id, updates, { new: true });
+
+    if (!updateuser) {
+      res.status(404).json({ error: "User not found" });
+    } else {
+      res.json(updateuser);
+      console.log("updated");
+    }
+  } catch (er) {
+    
+  }
+});
+
+
+//deleteendpoint
+app.delete("/delete/:id", async(req,res)=>{
+  try{
+
+    const id=req.params.id;
+    res.json(id)
+    await User.findByIdAndDelete(id);
+    console.log("delete record");
+    }
+    catch(er){
+      console.error(er);
+      res.status(500).send('Internal server error');
+    }
+
+  
+
+})
 
 
 
